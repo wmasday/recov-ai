@@ -318,6 +318,16 @@
         </script>
     @endif
 
+    @if (session('success-manage-assurance'))
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'success',
+                title: 'Manage assurance successfully',
+                text: '{{ session('success-manage-assurance') }}',
+            });
+        </script>
+    @endif
+
     @if (session('success-delete-employee'))
         <script type="text/javascript">
             Swal.fire({

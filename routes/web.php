@@ -29,5 +29,7 @@ Route::prefix('/dashboard')->group(function () {
 
     Route::prefix('/assurance')->group(function () {
         Route::get('/', [AssuranceController::class, 'index'])->name('assurance.index');
+        Route::get('/show/{id}', [AssuranceController::class, 'show'])->name('assurance.show');
+        Route::post('/store/{id}', [AssuranceController::class, 'store'])->name('assurance.store');
     });
 });

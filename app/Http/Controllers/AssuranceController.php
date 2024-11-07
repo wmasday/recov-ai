@@ -21,33 +21,28 @@ class AssuranceController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         try {
             $request->validate([
-                'identify' => 'required|unique:employees,identify|max:255',
-                'fullname' => 'string|max:255',
-                'email' => 'required|email|unique:employees,email|max:255',
-            ], [
-                'email.unique' => 'The email has already been taken.',
-                'identify.unique' => 'The employee ID is already registered.',
+                'type' => 'string|max:255',
+                'start' => 'required|date',
+                'end' => 'required|date',
             ]);
 
-            $profileImagePath = null;
-            if ($request->hasFile('profile')) {
-                $profileImage = $request->file('profile');
-                $filename = uniqid('profile_', true) . '.png';
-                $profileImagePath = $profileImage->storeAs('profiles', $filename, 'public');
-            }
-            Employee::create([
-                'identify' => $request->identify,
-                'fullname' => $request->fullname,
-                'email' => $request->email,
-                'profile' => $profileImagePath,
-            ]);
+            $data = [
+                'type' => $request->input('type'),
+                'start' => $request->input('start'),
+                'end' => $request->input('end'),
+            ];
 
-            return redirect()->route('employee.index')
-                ->with('success-add-employee', $request->fullname . ' added as an employee');
+            Assurance::updateOrCreate(
+                ['employee_id' => $id],
+                $data
+            );
+
+            return redirect()->route('assurance.index')
+                ->with('success-manage-assurance', 'Manage data successfully.');
         } catch (\Throwable $th) {
             return redirect()->back()->withInput()->with('error', $th->getMessage());
         }
@@ -56,76 +51,23 @@ class AssuranceController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $employee = Employee::findOrFail($id);
-            return response()->json($employee);
-        } catch (\Throwable $th) {
-            return "TROUBLE..." . $th;
-        }
-    }
+            $employee = Employee::with('assurances')->findOrFail($id);
 
-    public function update(Request $request, $id)
-    {
-        try {
-            $request->validate([
-                'identify' => 'required|unique:employees,identify,' . $id . '|max:255',
-                'fullname' => 'string|max:255',
-                'email' => 'required|email|unique:employees,email,' . $id . '|max:255',
-            ], [
-                'email.unique' => 'The email has already been taken.',
-                'identify.unique' => 'The employee ID is already registered.',
-            ]);
-
-            $employee = Employee::findOrFail($id);
-
-            $profileImagePath = $employee->profile;
-            if ($request->hasFile('profile')) {
-                if ($profileImagePath && file_exists(storage_path('app/public/' . $profileImagePath))) {
-                    unlink(storage_path('app/public/' . $profileImagePath));
-                }
-
-                $profileImage = $request->file('profile');
-                $filename = uniqid('profile_', true) . '.png';
-                $profileImagePath = $profileImage->storeAs('profiles', $filename, 'public');
-            }
-
-            $employee->update([
-                'identify' => $request->identify,
-                'fullname' => $request->fullname,
-                'email' => $request->email,
-                'profile' => $profileImagePath,
-            ]);
-
-            return redirect()->route('employee.index')
-                ->with('success-update-employee', $request->fullname . ' data successfully edited.');
-        } catch (\Throwable $th) {
-            return redirect()->back()->withInput()->with('error', $th->getMessage());
-        }
-    }
-
-    public function search(Request $request)
-    {
-        $query = $request->get('search');
-
-        $employee = Employee::where('fullname', 'LIKE', "%{$query}%")
-            ->orWhere('identify', 'LIKE', "%{$query}%")
-            ->orWhere('email', 'LIKE', "%{$query}%")
-            ->first();
-
-        return response()->json(view('employee._employee_rows', compact('employee'))->render());
-    }
-
-    public function destroy(Request $request, $id)
-    {
-        try {
-            $employee = Employee::find($id);
-            if ($employee->delete()) {
-                return redirect()->route('employee.index')
-                    ->with('success-delete-employee', $employee->fullname . ' deleted as an employee');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Failed delete employee.');
-            }
-        } catch (\Throwable $th) {
-            return redirect()->back()->withInput()->with('error', 'Failed delete employee.');
+            return response()->json([
+                'status' => 'success',
+                'data' => $employee
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Employee not found.'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while retrieving the employee.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }

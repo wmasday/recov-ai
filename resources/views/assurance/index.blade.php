@@ -14,41 +14,10 @@
                             </ol>
                         </nav>
                     </div>
-                    <div class="col-sm-7">
+                    <div class="col-sm-9">
                         <i class="bi bi-search" id="search-icon"></i>
                         <input type="text" class="form-control border-0 shadow-none w-100 mt-4 ps-5" id="search-form"
                             placeholder="Search">
-                    </div>
-                    <div class="col-sm-2 pt-3">
-                        <button type="button" class="btn btn-add mt-2 w-100" data-bs-toggle="modal"
-                            data-bs-target="#addEmployee" onclick="addModal()">
-                            <div class="float-start me-3">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_41_116" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0"
-                                        y="11" width="14" height="7">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M0.666687 11.0466H13.795V17.1624H0.666687V11.0466Z" fill="white" />
-                                    </mask>
-                                    <g mask="url(#mask0_41_116)">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M7.23085 12.2966C3.70502 12.2966 1.91669 12.9025 1.91669 14.0958C1.91669 15.3008 3.70502 15.9125 7.23085 15.9125C10.7567 15.9125 12.545 15.3066 12.545 14.1141C12.545 12.9075 10.7567 12.2966 7.23085 12.2966M7.23085 17.1625C5.60752 17.1625 0.666687 17.1625 0.666687 14.0958C0.666687 11.3625 4.41252 11.0466 7.23085 11.0466C8.85419 11.0466 13.795 11.0466 13.795 14.1141C13.795 16.8466 10.0492 17.1625 7.23085 17.1625"
-                                            fill="white" />
-                                    </g>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M7.23085 1.91675C5.47752 1.91675 4.05002 3.34425 4.05002 5.09841C4.04668 5.94758 4.37335 6.74341 4.96918 7.34425C5.56585 7.94425 6.36085 8.27675 7.20752 8.28008L7.23085 8.90508V8.28008C8.98502 8.28008 10.4125 6.85258 10.4125 5.09841C10.4125 3.34425 8.98502 1.91675 7.23085 1.91675M7.23085 9.53008H7.20502C6.02252 9.52591 4.91418 9.06175 4.08335 8.22508C3.25168 7.38758 2.79585 6.27591 2.80002 5.09591C2.80002 2.65508 4.78752 0.666748 7.23085 0.666748C9.67502 0.666748 11.6625 2.65508 11.6625 5.09841C11.6625 7.54175 9.67502 9.53008 7.23085 9.53008"
-                                        fill="white" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M15.0034 10.1914C14.6584 10.1914 14.3784 9.91138 14.3784 9.56638V6.22388C14.3784 5.87888 14.6584 5.59888 15.0034 5.59888C15.3484 5.59888 15.6284 5.87888 15.6284 6.22388V9.56638C15.6284 9.91138 15.3484 10.1914 15.0034 10.1914"
-                                        fill="white" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M16.7084 8.52002H13.3C12.955 8.52002 12.675 8.24002 12.675 7.89502C12.675 7.55002 12.955 7.27002 13.3 7.27002H16.7084C17.0534 7.27002 17.3334 7.55002 17.3334 7.89502C17.3334 8.24002 17.0534 8.52002 16.7084 8.52002"
-                                        fill="white" />
-                                </svg>
-
-                            </div>
-                            <span>Add Employee</span>
-                        </button>
                     </div>
                 </div>
 
@@ -64,7 +33,7 @@
                             </svg>
                         </div>
                         <h2 class="d-inline-block ms-1" style="font-size: 15px !important;font-weight: 500 !important;">
-                            Employee List
+                            Assurance
                         </h2>
                     </div>
 
@@ -94,7 +63,7 @@
                                     <td class="text-center">
                                         <button type="button" class="btn btn-edit mt-2" data-bs-toggle="modal"
                                             data-bs-target="#editEmployee"
-                                            onclick="editModal('{{ route('employee.show', $employee->id) }}', '{{ route('employee.update', $employee->id) }}')">
+                                            onclick="editModal('{{ route('assurance.show', $employee->id) }}', '{{ route('assurance.store', $employee->id) }}')">
                                             <div class="float-start">
                                                 <svg width="25" height="24" viewBox="0 0 32 32" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -114,82 +83,65 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="addEmployeeLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="p-3 border-bottom">
-                    <h1 class="modal-title fs-5" id="addEmployeeLabel">Add Your Employee</h1>
-                    <div class="text-secondary d-block subpoint">Fill the form below to add an employee</div>
-                    <button type="button" class="btn-close float-end custom-close" data-bs-dismiss="modal"
-                        aria-label="Close" onclick="closeAddModal()">
-                    </button>
-                </div>
-                <form class="modal-body" method="POST" action="{{ route('employee.store') }}"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="mb-2 text-secondary">Employee Name</label>
-                        <input type="text" class="form-control py-2" placeholder="Fullname" name="fullname"
-                            required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="mb-2 text-secondary">Email</label>
-                        <input type="email" class="form-control py-2" placeholder="Email" name="email" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="mb-2 text-secondary">Employee ID</label>
-                        <input type="number" class="form-control py-2" placeholder="XXX XXX XXX XXX XXX"
-                            name="identify" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="mb-2 text-secondary">Employee Profile</label>
-                        <input type="file" class="form-control py-2" name="profile" required />
-                    </div>
-
-                    <button type="submit" class="btn btn-add-employee">Add Employee</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="editEmployee" tabindex="-2" aria-labelledby="editEmployeeLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
                 <div class="p-3 border-bottom">
-                    <h1 class="modal-title fs-5" id="editEmployeeLabel">Edit Your Employee</h1>
-                    <div class="text-secondary d-block subpoint">Fill the form below to edit an employee</div>
+                    <h1 class="modal-title fs-5" id="editEmployeeLabel">Employee Assurance</h1>
+                    <div class="text-secondary d-block subpoint">Fill the form below to manage an employee assurance</div>
                     <button type="button" class="btn-close float-end custom-close" data-bs-dismiss="modal"
                         aria-label="Close" onclick="closeEditModal()">
                     </button>
                 </div>
-                <form class="modal-body" method="POST" id="update-employee-form" enctype="multipart/form-data">
+                <form class="modal-body" method="POST" id="update-employee-form">
                     @csrf
+                    <input type="hidden" id="employee_id" />
                     <div class="mb-3">
                         <label class="mb-2 text-secondary">Employee Name</label>
                         <input type="text" class="form-control py-2" placeholder="Fullname" name="fullname"
-                            id="edFullname" required />
+                            id="edFullname" disabled readonly />
                     </div>
 
                     <div class="mb-3">
                         <label class="mb-2 text-secondary">Email</label>
-                        <input type="email" class="form-control py-2" placeholder="Email" name="email"
-                            id="edEmail" required />
+                        <input type="email" class="form-control py-2" placeholder="Email" name="email" id="edEmail"
+                            disabled readonly />
                     </div>
 
                     <div class="mb-3">
                         <label class="mb-2 text-secondary">Employee ID</label>
                         <input type="number" class="form-control py-2" placeholder="XXX XXX XXX XXX XXX"
-                            name="identify" id="edIdentify" required />
+                            name="identify" id="edIdentify" disabled readonly />
                     </div>
 
                     <div class="mb-3">
-                        <label class="mb-2 text-secondary">Employee Profile</label>
-                        <input type="file" class="form-control py-2" name="profile" />
+                        <label class="mb-2 text-secondary">Assurance Type</label>
+                        <select class="form-select py-2" aria-label="Select Employee Assurance" id="type"
+                            name="type" required>
+                            <option selected>Select Employee Assurance</option>
+                            <option value="BPJS">BPJS</option>
+                            <option value="Mandiri+">Mandiri+</option>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-add-employee">Edit Employee</button>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="mb-2 text-secondary">Assurance Start Date</label>
+                                <input type="date" class="form-control py-2 text-uppercase" name="start"
+                                    id="start" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="mb-2 text-secondary">Assurance End Date</label>
+                                <input type="date" class="form-control py-2 text-uppercase" name="end"
+                                    id="end" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-add-employee">Submit</button>
                 </form>
             </div>
         </div>
@@ -198,32 +150,6 @@
 
 @section('scripts')
     <script type="text/javascript">
-        function deleteEmployee(url) {
-            Swal.fire({
-                title: "Are You Sure?",
-                text: "Data will be deleted permanently",
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: "Yes",
-                denyButtonText: `No`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            });
-        }
-
-        function addModal() {
-            let addEmployee = new bootstrap.Modal(document.getElementById('addEmployee'), {});
-            addEmployee.show();
-        }
-
-        function closeAddModal() {
-            let addEmployee = new bootstrap.Modal(document.getElementById('addEmployee'), {});
-            addEmployee.hide();
-            document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
-        }
-
         function editModal(url, url_update) {
             $('#update-employee-form').attr('action', url_update);
             let editEmployee = new bootstrap.Modal(document.getElementById('editEmployee'), {});
@@ -231,9 +157,18 @@
                 url,
                 method: 'GET',
                 success: function(employee) {
-                    $('#edFullname').val(employee.fullname);
-                    $('#edEmail').val(employee.email);
-                    $('#edIdentify').val(employee.identify);
+                    console.log(employee.data)
+                    $('#employee_id').val(employee.data.id);
+                    $('#edFullname').val(employee.data.fullname);
+                    $('#edEmail').val(employee.data.email);
+                    $('#edIdentify').val(employee.data.identify);
+                    if (employee.data.assurances.length > 0) {
+                        const assurance = employee.data.assurances[0];
+                        $('#type').val(assurance.type || "Select Employee Assurance");
+                        $('#start').val(assurance.start);
+                        $('#end').val(assurance.end);
+                    }
+
                     editEmployee.show();
                 },
                 error: function(xhr, status, error) {
