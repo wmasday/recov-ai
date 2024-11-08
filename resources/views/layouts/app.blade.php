@@ -139,7 +139,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content p-3">
                 <div class="p-3 border-bottom">
-                    <h1 class="modal-title fs-5" id="medicalRecordLabel">Medica Record</h1>
+                    <h1 class="modal-title fs-5" id="medicalRecordLabel">Medical Record</h1>
                     <div class="text-secondary d-block subpoint">Request Employee Medical Record</div>
                     <button type="button" class="btn-close float-end custom-close" data-bs-dismiss="modal"
                         aria-label="Close" onclick="medicalRecordClose()">
@@ -147,35 +147,40 @@
                 </div>
                 <div class="modal-body">
                     @foreach ($requests as $req)
-                        <div class="row mt-2 mb-2">
-                            <div class="col-4">
-                                <div class="float-start me-3">
-                                    <img src="{{ $req->employee->profile ? asset('storage/' . $req->employee->profile) : 'https://randomuser.me/api/portraits/men/90.jpg' }}"
-                                        alt="Profile Image" class="profile-request" />
+                        @if ($req->status == 0)
+                            <div class="row mt-2 mb-2">
+                                <div class="col-4">
+                                    <div class="float-start me-3">
+                                        <img src="{{ $req->employee->profile ? asset('storage/' . $req->employee->profile) : 'https://randomuser.me/api/portraits/men/90.jpg' }}"
+                                            alt="Profile Image" class="profile-request" />
+                                    </div>
+                                    <div class="fullname">{{ $req->employee->fullname }}</div>
+                                    <div class="employee-id">{{ $req->employee->identify }}</div>
                                 </div>
-                                <div class="fullname">{{ $req->employee->fullname }}</div>
-                                <div class="employee-id">{{ $req->employee->identify }}</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="text-secondary" style="font-size: 13px !important;">
-                                    <i class="bi bi-envelope me-2"></i>
-                                    Email
+                                <div class="col-4">
+                                    <div class="text-secondary" style="font-size: 13px !important;">
+                                        <i class="bi bi-envelope me-2"></i>
+                                        Email
+                                    </div>
+
+                                    <div class="email">{{ $req->employee->email }}</div>
                                 </div>
 
-                                <div class="email">{{ $req->employee->email }}</div>
-                            </div>
+                                <div class="col-4 text-center">
+                                    <div class="text-secondary" style="font-size: 10px !important;">Approve Request?
+                                    </div>
+                                    <button type="button" class="btn btn-decline mx-2"
+                                        onclick="rejectionRecordShow('{{ route('declineRecord.show', $req->id) }}')">
+                                        <i class="bi bi-x"></i>
+                                    </button>
 
-                            <div class="col-4 text-center">
-                                <div class="text-secondary" style="font-size: 10px !important;">Approve Request?</div>
-                                <button type="button" class="btn btn-decline mx-2" onclick="rejectionRecordShow()">
-                                    <i class="bi bi-x"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-approve mx-2" onclick="approveRecordShow()">
-                                    <i class="bi bi-check2"></i>
-                                </button>
+                                    <button type="button" class="btn btn-approve mx-2"
+                                        onclick="approveRecordShow('{{ route('approveRecord.show', $req->id) }}')">
+                                        <i class="bi bi-check2"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -184,78 +189,15 @@
 
     <div class="modal fade" id="approveRecord" tabindex="-1" aria-labelledby="approveRecordLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content p-3">
-                <div class="p-3 border-bottom">
-                    <h1 class="modal-title fs-5" id="approveRecordLabel">Medical Record Form</h1>
-                    <button type="button" class="btn-close float-end custom-close" data-bs-dismiss="modal"
-                        aria-label="Close" onclick="approveRecordClose()">
-                    </button>
-                </div>
-                <form class="modal-body">
-                    <div class="row mt-2 mb-2">
-                        <div class="col-6">
-                            <div class="float-start me-3">
-                                <img src="https://randomuser.me/api/portraits/men/92.jpg" alt="Profile Image"
-                                    class="profile-request" />
-                            </div>
-                            <div class="fullname">Muhammad Hidayat</div>
-                            <div class="employee-id">3209300609050002</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-secondary" style="font-size: 13px !important;">
-                                <i class="bi bi-envelope me-2"></i>
-                                Email
-                            </div>
-                            <div class="email">withmasday@gmail.com</div>
-                        </div>
+        <div class="modal-dialog" id="approveModalContent">
 
-                        <div class="col-12 mt-3">
-                            <label class="text-secondary mb-2 mt-2">Date</label>
-                            <input type="date" class="form-control py-2" />
-                        </div>
-
-                        <div class="col-12">
-                            <label class="text-secondary mb-2 mt-2">Disease Type</label>
-                            <input type="text" class="form-control py-2"
-                                placeholder="Asthma, Dermatitis, tunnel..." />
-                        </div>
-
-                        <div class="col-12">
-                            <label class="text-secondary mb-2 mt-2">Disease Detail</label>
-                            <textarea class="form-control" rows="3"></textarea>
-
-                            <button type="submit" class="w-100 btn-add-employee border-0 mt-3">Submit</button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 
     <div class="modal fade" id="rejectionRecord" tabindex="-1" aria-labelledby="rejectionRecordLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="p-3 border-bottom">
-                    <h1 class="modal-title fs-5" id="rejectionRecordLabel">Rejction Note</h1>
-                    <button type="button" class="btn-close float-end custom-close" data-bs-dismiss="modal"
-                        aria-label="Close" onclick="rejectionRecordClose()">
-                    </button>
-                </div>
-                <form class="modal-body">
-                    <div class="row mb-2">
-                        <div class="col-12">
-                            <label class="text-secondary mb-2">Note</label>
-                            <textarea class="form-control" rows="3"></textarea>
+        <div class="modal-dialog modal-dialog-centered" id="declineModalContent">
 
-                            <button type="submit" class="w-100 btn-add-employee border-0 mt-3">Submit</button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 
@@ -285,7 +227,7 @@
             document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
         }
 
-        function approveRecordShow() {
+        function approveRecordShow(url) {
             document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
             document.querySelectorAll('.modal.show').forEach((modal) => {
                 let modalInstance = bootstrap.Modal.getInstance(modal);
@@ -293,8 +235,19 @@
                     modalInstance.hide();
                 }
             });
+
             let approveRecord = new bootstrap.Modal(document.getElementById('approveRecord'), {});
-            approveRecord.show();
+            $.ajax({
+                url,
+                method: 'GET',
+                success: function(response) {
+                    $('#approveModalContent').html(response);
+                    approveRecord.show();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading record:', error);
+                }
+            });
         }
 
         function approveRecordClose() {
@@ -303,7 +256,7 @@
             document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
         }
 
-        function rejectionRecordShow() {
+        function rejectionRecordShow(url) {
             document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
             document.querySelectorAll('.modal.show').forEach((modal) => {
                 let modalInstance = bootstrap.Modal.getInstance(modal);
@@ -312,7 +265,17 @@
                 }
             });
             let rejectionRecord = new bootstrap.Modal(document.getElementById('rejectionRecord'), {});
-            rejectionRecord.show();
+            $.ajax({
+                url,
+                method: 'GET',
+                success: function(response) {
+                    $('#declineModalContent').html(response);
+                    rejectionRecord.show();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading record:', error);
+                }
+            });
         }
 
         function rejectionRecordClose() {
@@ -321,6 +284,15 @@
             document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
         }
     </script>
+    @if (session('success'))
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+    @endif
 
     @if (session('success-add-employee'))
         <script type="text/javascript">

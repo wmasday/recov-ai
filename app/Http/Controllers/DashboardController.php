@@ -7,6 +7,8 @@ use App\Models\Record;
 use App\Models\RequestRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Mail\RequestRecordUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class DashboardController extends Controller
 {
@@ -45,52 +47,70 @@ class DashboardController extends Controller
         }
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function approveRecordShow($id)
     {
-        //
+        $req = RequestRecord::with('employee')->findOrFail($id);
+        return view('layouts._approve', compact('req'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function declineRecordShow($id)
     {
-        //
+        $req = RequestRecord::with('employee')->findOrFail($id);
+        return view('layouts._decline', compact('req'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function updateRequestRecord(Request $request, $id)
     {
-        //
+        try {
+            $req = RequestRecord::findOrFail($id);
+
+            $validatedData = $request->validate([
+                'date' => 'nullable|date',
+                'disease' => 'nullable|string|max:255',
+                'notes' => 'nullable|string',
+            ]);
+
+            $req->update([
+                'date' => $validatedData['date'] ?? $req->date,
+                'disease' => $validatedData['disease'] ?? $req->disease,
+                'notes' => $validatedData['notes'] ?? $req->notes,
+                'status' => 'Approve',
+            ]);
+
+            Mail::to($req->employee->email)->send(new RequestRecordUpdated($req));
+
+            return redirect()->route('dashboard')
+                ->with('success', 'Request Record updated successfully and email sent to employee.');
+        } catch (\Exception $e) {
+            // Handle error
+            return redirect()->route('dashboard')
+                ->with('error', 'An error occurred while updating the record: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function updateRequestRecordDECLINE(Request $request, $id)
     {
-        //
-    }
+        try {
+            $req = RequestRecord::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $validatedData = $request->validate([
+                'notes' => 'nullable|string',
+            ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $req->update([
+                'disease' => '',
+                'notes' => $validatedData['notes'] ?? $req->notes,
+                'status' => 'Decline',
+            ]);
+
+            Mail::to($req->employee->email)->send(new RequestRecordUpdated($req));
+
+            return redirect()->route('dashboard')
+                ->with('success', 'Request Record updated successfully and email sent to employee.');
+        } catch (\Exception $e) {
+            // Handle error
+            return redirect()->route('dashboard')
+                ->with('error', 'An error occurred while updating the record: ' . $e->getMessage());
+        }
     }
 }

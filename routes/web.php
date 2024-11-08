@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RecordController;
@@ -19,7 +20,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
 Route::middleware(['auth'])->prefix('/dashboard')->group(function () {
-    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/approve-record/{id}', [DashboardController::class, 'approveRecordShow'])->name('approveRecord.show');
+    Route::get('/decline-record/{id}', [DashboardController::class, 'declineRecordShow'])->name('declineRecord.show');
+
+    Route::post('/send/{id}', [DashboardController::class, 'updateRequestRecord'])->name('updateRequestRecord');
+    Route::post('/decline/{id}', [DashboardController::class, 'updateRequestRecordDECLINE'])->name('updateRequestRecordDECLINE');
 
     Route::prefix('/employee')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
