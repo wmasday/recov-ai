@@ -39,7 +39,7 @@
                                         aria-label="Filter Type" id="type" name="type" required>
                                         <option value="" selected>All Type</option>
                                         <option value="Fall">Fall</option>
-                                        <option value="Safety+">Safety</option>
+                                        <option value="Safety">Safety</option>
                                     </select>
                                 </div>
 

@@ -13,4 +13,9 @@ class Employee extends Model
     {
         return $this->hasMany(Assurance::class);
     }
+
+    public function requestRecords()
+    {
+        return $this->hasMany(RequestRecord::class, 'employee_id');
+    }
 }

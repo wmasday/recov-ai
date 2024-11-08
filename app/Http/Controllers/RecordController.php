@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Record;
+use App\Models\RequestRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +18,10 @@ class RecordController extends Controller
     {
         try {
             $records = Record::with('employee')->get();
-            return view("records.index", ["records" => $records]);
+            $requests = RequestRecord::with('employee')
+                ->where('status', 0)
+                ->get();
+            return view("records.index", ["records" => $records, 'requests' => $requests]);
         } catch (\Throwable $th) {
             return "TROUBLE..." . $th;
         }
@@ -87,7 +91,10 @@ class RecordController extends Controller
         try {
             $employees = Employee::limit(3)->get();
             $record = Record::with('employee')->find($id);
-            return view("records.show", ["record" => $record, "employees" => $employees]);
+            $requests = RequestRecord::with('employee')
+                ->where('status', 0)
+                ->get();
+            return view("records.show", ["record" => $record, "employees" => $employees, "requests" => $requests]);
         } catch (\Throwable $th) {
             return "TROUBLE..." . $th;
         }

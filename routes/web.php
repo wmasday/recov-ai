@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'client'])->name('client');
 Route::get('/client/search', [HomeController::class, 'search'])->name('client.search');
 Route::get('/client/assuranceCheck/{id}', [HomeController::class, 'assuranceCheck'])->name('client.assuranceCheck');
+Route::get('/client/requestRecord/{id}', [HomeController::class, 'requestRecord'])->name('client.requestRecord');
 
 Auth::routes();
 

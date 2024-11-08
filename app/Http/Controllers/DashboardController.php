@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Record;
+use App\Models\RequestRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,10 @@ class DashboardController extends Controller
     public function index()
     {
         try {
+            $requests = RequestRecord::with('employee')
+                ->where('status', 0)
+                ->get();
+
             $records = Record::with('employee')->limit(5)->get();
             $fallCount = Record::where('type', 'Fall')->count();
             $otherTypeCount = Record::where('type', '!=', 'Fall')->count();
@@ -32,7 +37,8 @@ class DashboardController extends Controller
                 "fallCount" => $fallCount,
                 "otherTypeCount" => $otherTypeCount,
                 "fallTodayCount" => $fallTodayCount,
-                "otherTypeTodayCount" => $otherTypeTodayCount
+                "otherTypeTodayCount" => $otherTypeTodayCount,
+                "requests" => $requests
             ]);
         } catch (\Throwable $th) {
             return "TROUBLE... " . $th;

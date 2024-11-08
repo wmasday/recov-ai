@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\RequestRecord;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -14,7 +15,11 @@ class EmployeeController extends Controller
     {
         try {
             $employees = Employee::all();
-            return view("employee.index", ["employees" => $employees]);
+            $requests = RequestRecord::with('employee')
+                ->where('status', 0)
+                ->get();
+
+            return view("employee.index", ["employees" => $employees, "requests" => $requests]);
         } catch (\Throwable $th) {
             return "TROUBLE..." . $th;
         }

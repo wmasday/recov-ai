@@ -21,7 +21,8 @@
                 <div class="email">{{ $employee->email }}</div>
             </td>
             <td class="text-center">
-                <a href="#" class="btn text-decoration-none" style="color: #14B8AD;font-size:13px;">
+                <a href="{{ route('client.requestRecord', $employee->id) }}" class="btn text-decoration-none"
+                    style="color: #14B8AD;font-size:13px;">
                     Request Medical Record
                 </a>
             </td>

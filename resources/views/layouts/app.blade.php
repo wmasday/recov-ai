@@ -146,35 +146,37 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mt-2 mb-2">
-                        <div class="col-4">
-                            <div class="float-start me-3">
-                                <img src="https://randomuser.me/api/portraits/men/92.jpg" alt="Profile Image"
-                                    class="profile-request" />
+                    @foreach ($requests as $req)
+                        <div class="row mt-2 mb-2">
+                            <div class="col-4">
+                                <div class="float-start me-3">
+                                    <img src="{{ $req->employee->profile ? asset('storage/' . $req->employee->profile) : 'https://randomuser.me/api/portraits/men/90.jpg' }}"
+                                        alt="Profile Image" class="profile-request" />
+                                </div>
+                                <div class="fullname">{{ $req->employee->fullname }}</div>
+                                <div class="employee-id">{{ $req->employee->identify }}</div>
                             </div>
-                            <div class="fullname">Muhammad Hidayat</div>
-                            <div class="employee-id">3209300609050002</div>
-                        </div>
-                        <div class="col-4">
-                            <div class="text-secondary" style="font-size: 13px !important;">
-                                <i class="bi bi-envelope me-2"></i>
-                                Email
+                            <div class="col-4">
+                                <div class="text-secondary" style="font-size: 13px !important;">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    Email
+                                </div>
+
+                                <div class="email">{{ $req->employee->email }}</div>
                             </div>
 
-                            <div class="email">withmasday@gmail.com</div>
-                        </div>
+                            <div class="col-4 text-center">
+                                <div class="text-secondary" style="font-size: 10px !important;">Approve Request?</div>
+                                <button type="button" class="btn btn-decline mx-2" onclick="rejectionRecordShow()">
+                                    <i class="bi bi-x"></i>
+                                </button>
 
-                        <div class="col-4 text-center">
-                            <div class="text-secondary" style="font-size: 10px !important;">Approve Request?</div>
-                            <button type="button" class="btn btn-decline mx-2" onclick="rejectionRecordShow()">
-                                <i class="bi bi-x"></i>
-                            </button>
-
-                            <button type="button" class="btn btn-approve mx-2" onclick="approveRecordShow()">
-                                <i class="bi bi-check2"></i>
-                            </button>
+                                <button type="button" class="btn btn-approve mx-2" onclick="approveRecordShow()">
+                                    <i class="bi bi-check2"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

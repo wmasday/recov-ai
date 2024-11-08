@@ -65,6 +65,16 @@
             });
         </script>
     @endif
+
+    @if (session('request-record-success'))
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'success',
+                title: 'Your Request Has Been Delivered',
+                text: '{{ session('request-record-success') }}',
+            });
+        </script>
+    @endif
 </body>
 
 </html>

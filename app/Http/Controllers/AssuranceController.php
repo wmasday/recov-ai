@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Assurance;
+use App\Models\RequestRecord;
 use Illuminate\Http\Request;
 
 class AssuranceController extends Controller
@@ -14,8 +15,12 @@ class AssuranceController extends Controller
     public function index()
     {
         try {
+            $requests = RequestRecord::with('employee')
+                ->where('status', 0)
+                ->get();
+
             $employees = Employee::all();
-            return view("assurance.index", ["employees" => $employees]);
+            return view("assurance.index", ["employees" => $employees, 'requests' => $requests]);
         } catch (\Throwable $th) {
             return "TROUBLE..." . $th;
         }
