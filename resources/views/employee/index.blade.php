@@ -71,7 +71,7 @@
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center">Name</th>
+                                <th scope="col" class="text-center" style="width: 25% !important;">Name</th>
                                 <th scope="col" class="text-center">Employee ID</th>
                                 <th scope="col" class="text-center">Email</th>
                                 <th scope="col" class="text-center">Action</th>

@@ -27,9 +27,12 @@ class EmployeeController extends Controller
                 'identify' => 'required|unique:employees,identify|max:255',
                 'fullname' => 'string|max:255',
                 'email' => 'required|email|unique:employees,email|max:255',
+                'profile' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             ], [
                 'email.unique' => 'The email has already been taken.',
                 'identify.unique' => 'The employee ID is already registered.',
+                'profile.mimes' => 'Profile picture not allowed.',
+                'profile.max' => 'Profile picture max 2 mb.',
             ]);
 
             $profileImagePath = null;

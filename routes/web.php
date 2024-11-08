@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RecordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -13,11 +14,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/1', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-Route::get('/2', [App\Http\Controllers\HomeController::class, 'index'])->name('records');
-Route::get('/3', [App\Http\Controllers\HomeController::class, 'index'])->name('records');
-
 Route::prefix('/dashboard')->group(function () {
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('/employee')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
         Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');
@@ -31,5 +29,16 @@ Route::prefix('/dashboard')->group(function () {
         Route::get('/', [AssuranceController::class, 'index'])->name('assurance.index');
         Route::get('/show/{id}', [AssuranceController::class, 'show'])->name('assurance.show');
         Route::post('/store/{id}', [AssuranceController::class, 'store'])->name('assurance.store');
+        Route::get('/search', [AssuranceController::class, 'search'])->name('assurance.search');
+    });
+
+    Route::prefix('/records')->group(function () {
+        Route::get('/', [RecordController::class, 'index'])->name('records.index');
+        Route::post('/filter', [RecordController::class, 'filter'])->name('records.filter');
+        Route::post('/store', [RecordController::class, 'store'])->name('records.store');
+        Route::get('/show/{id}', [RecordController::class, 'show'])->name('records.show');
+        Route::get('/rm/{id}', [RecordController::class, 'destroy'])->name('records.destroy');
+        Route::get('/search', [RecordController::class, 'search'])->name('records.search');
+        Route::post('/update/{id}', [RecordController::class, 'update'])->name('records.update');
     });
 });

@@ -70,4 +70,16 @@ class AssuranceController extends Controller
             ], 500);
         }
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('search');
+
+        $employee = Employee::where('fullname', 'LIKE', "%{$query}%")
+            ->orWhere('identify', 'LIKE', "%{$query}%")
+            ->orWhere('email', 'LIKE', "%{$query}%")
+            ->first();
+
+        return response()->json(view('assurance._assurance_rows', compact('employee'))->render());
+    }
 }

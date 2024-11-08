@@ -66,14 +66,14 @@
                 <span class="link-title">Dashboard</span>
             </a>
 
-            <a class="{{ request()->routeIs('records') ? 'menu-list-active' : 'menu-list' }}"
-                href="{{ route('records') }}">
+            <a class="{{ request()->routeIs('records.index') ? 'menu-list-active' : 'menu-list' }}"
+                href="{{ route('records.index') }}">
                 <div class="icon float-start">
                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M16 3.79999V7.79999M8 3.79999V7.79999M4 11.8H20M11 15.8H12V18.8M4 7.79999C4 7.26955 4.21071 6.76085 4.58579 6.38577C4.96086 6.0107 5.46957 5.79999 6 5.79999H18C18.5304 5.79999 19.0391 6.0107 19.4142 6.38577C19.7893 6.76085 20 7.26955 20 7.79999V19.8C20 20.3304 19.7893 20.8391 19.4142 21.2142C19.0391 21.5893 18.5304 21.8 18 21.8H6C5.46957 21.8 4.96086 21.5893 4.58579 21.2142C4.21071 20.8391 4 20.3304 4 19.8V7.79999Z"
-                            stroke="{{ request()->routeIs('records') ? '#14B8AD' : '#9A9A9A' }}" stroke-width="2"
+                            stroke="{{ request()->routeIs('records.index') ? '#14B8AD' : '#9A9A9A' }}" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
@@ -338,12 +338,32 @@
         </script>
     @endif
 
+    @if (session('success-delete-record'))
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'success',
+                title: 'Record was successfully deleted',
+                text: '{{ session('success-delete-record') }}',
+            });
+        </script>
+    @endif
+
     @if (session('success-update-employee'))
         <script type="text/javascript">
             Swal.fire({
                 icon: 'success',
                 title: 'Employee was successfully edited',
-                text: '{{ session('success-delete-employee') }}',
+                text: '{{ session('success-update-employee') }}',
+            });
+        </script>
+    @endif
+
+    @if (session('success-update-record'))
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'success',
+                title: 'Record was successfully edited',
+                text: '{{ session('success-update-record') }}',
             });
         </script>
     @endif
