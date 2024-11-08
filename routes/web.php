@@ -3,13 +3,14 @@
 use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RecordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'client'])->name('client');
+Route::get('/client/search', [HomeController::class, 'search'])->name('client.search');
+Route::get('/client/assuranceCheck/{id}', [HomeController::class, 'assuranceCheck'])->name('client.assuranceCheck');
 
 Auth::routes();
 
